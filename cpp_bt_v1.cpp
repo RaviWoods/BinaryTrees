@@ -16,7 +16,7 @@ typedef CP * CPPtr;
 int NoOfOddNodes(CPPtr hdTree);
 int NoOfNodes(CPPtr hdTree);
 int SumOfNodes(CPPtr hdTree);
-CPPtr FindMinData(CPPtr hdTree);
+void FindMinData(CPPtr hdTree, bool found, CPPtr outPtr);
 // Generate an instance of the structure
 void constructStructure(CPPtr &hdTree);
 
@@ -31,12 +31,16 @@ int main(int argc, char ** argv)
 
 	// =================================
 	// Your functions should go here
-    int nodenum = NoOfNodes(hdTree);
-    int oddnodenum = NoOfOddNodes(hdTree);
-	bool finish = false;
-	CPPtr outPtr = FindMinData(hdTree);
-	int sum = SumOfNodes(hdTree);
-	cout << outPtr->id << "\t" << outPtr->data << endl;
+   // int nodenum = NoOfNodes(hdTree);
+    //int oddnodenum = NoOfOddNodes(hdTree);
+	bool found = false;
+	CPPtr outPtr = NULL;
+	FindMinData(hdTree->left, found, outPtr);
+	//int sum = SumOfNodes(hdTree);
+	if (outPtr == NULL) {
+        cout << "NULL" << endl;
+	}
+	//cout << outPtr->id << "\t" << outPtr->data << endl;
     //cout << sum << endl;
     // =================================
 
@@ -76,14 +80,27 @@ int NoOfOddNodes(CPPtr hdTree) {
     }
 }
 
-CPPtr FindMinData(CPPtr hdTree) {
+void FindMinData(CPPtr hdTree, bool found, CPPtr outPtr) {
 	if(hdTree == NULL) {
 		cout << "ERROR";
 	}
-    while(hdTree->left != NULL) {
-		hdTree = hdTree->left;
+    else if(hdTree->left != NULL) {
+		FindMinData(hdTree->left, found, outPtr);
+		if(found) {
+			outPtr = hdTree;
+			found = false;
+		}
 	}
-	return hdTree;
+
+	cout << hdTree->data << endl;
+	cout << outPtr << endl;
+	/*
+	if(!found) {
+        outPtr = hdTree;
+        found = true;
+	}
+	*/
+	return;
 }
 
 void FindDepth(CPPtr hdTree, int& depth) {
