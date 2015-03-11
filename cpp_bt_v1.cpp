@@ -16,7 +16,7 @@ typedef CP * CPPtr;
 int NoOfOddNodes(CPPtr hdTree);
 int NoOfNodes(CPPtr hdTree);
 int SumOfNodes(CPPtr hdTree);
-void FindMinData(CPPtr hdTree, bool found, CPPtr outPtr);
+CPPtr FindMin(CPPtr hdTree);
 // Generate an instance of the structure
 void constructStructure(CPPtr &hdTree);
 
@@ -30,18 +30,26 @@ int main(int argc, char ** argv)
 	constructStructure(hdTree);
 
 	// =================================
-	// Your functions should go here
-   // int nodenum = NoOfNodes(hdTree);
-    //int oddnodenum = NoOfOddNodes(hdTree);
-	bool found = false;
-	CPPtr outPtr = NULL;
-	FindMinData(hdTree->left, found, outPtr);
-	//int sum = SumOfNodes(hdTree);
-	if (outPtr == NULL) {
-        cout << "NULL" << endl;
+	// 1) Print number of nodes
+    int nodenum = NoOfNodes(hdTree);
+    cout << nodenum << endl;
+
+    // 2) Print number of nodes with an odd data field
+    int oddnodenum = NoOfOddNodes(hdTree);
+    cout << oddnodenum << endl;
+
+    // 3) Print id and data fields of node with minimum data value
+	CPPtr outPtr = FindMin(hdTree);
+	if(outPtr == NULL) {
+	    cout << "Tree empty, therefore no minimum.";
 	}
-	//cout << outPtr->id << "\t" << outPtr->data << endl;
-    //cout << sum << endl;
+	else {
+        cout << "id: " << outPtr->id << "\t data: " << outPtr->data << endl;
+	}
+
+	// 4) Print sum of all data in the tree
+	int datasum = SumOfNodes(hdTree);
+	cout << datasum << endl;
     // =================================
 
     // Just to freeze the console window (not always necessary)
@@ -80,27 +88,14 @@ int NoOfOddNodes(CPPtr hdTree) {
     }
 }
 
-void FindMinData(CPPtr hdTree, bool found, CPPtr outPtr) {
-	if(hdTree == NULL) {
-		cout << "ERROR";
+CPPtr FindMin(CPPtr hdTree) {
+    if( hdTree == NULL) {
+        return NULL;
 	}
-    else if(hdTree->left != NULL) {
-		FindMinData(hdTree->left, found, outPtr);
-		if(found) {
-			outPtr = hdTree;
-			found = false;
-		}
+    if(hdTree->left) {
+        return FindMin(hdTree->left);
 	}
-
-	cout << hdTree->data << endl;
-	cout << outPtr << endl;
-	/*
-	if(!found) {
-        outPtr = hdTree;
-        found = true;
-	}
-	*/
-	return;
+    return hdTree;
 }
 
 void FindDepth(CPPtr hdTree, int& depth) {
