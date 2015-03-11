@@ -15,6 +15,8 @@ typedef CP * CPPtr;
 // Function prototypes
 int NoOfOddNodes(CPPtr hdTree);
 int NoOfNodes(CPPtr hdTree);
+int SumOfNodes(CPPtr hdTree);
+CPPtr FindMinData(CPPtr hdTree);
 // Generate an instance of the structure
 void constructStructure(CPPtr &hdTree);
 
@@ -29,18 +31,28 @@ int main(int argc, char ** argv)
 
 	// =================================
 	// Your functions should go here
-    int sum = NoOfNodes(hdTree);
-    int oddsum = NoOfOddNodes(hdTree);
-
-
-    cout << sum << endl;
-    cout << oddsum << endl;
+    int nodenum = NoOfNodes(hdTree);
+    int oddnodenum = NoOfOddNodes(hdTree);
+	bool finish = false;
+	CPPtr outPtr = FindMinData(hdTree);
+	int sum = SumOfNodes(hdTree);
+	cout << outPtr->id << "\t" << outPtr->data << endl;
+    //cout << sum << endl;
     // =================================
 
     // Just to freeze the console window (not always necessary)
     // getchar();
 
     return 0;
+}
+
+int SumOfNodes(CPPtr hdTree) {
+    if(hdTree == NULL) {
+        return 0;
+    }
+    else {
+        return (hdTree->data + SumOfNodes(hdTree->left) + SumOfNodes(hdTree->right));
+    }
 }
 
 int NoOfNodes(CPPtr hdTree) {
@@ -63,6 +75,27 @@ int NoOfOddNodes(CPPtr hdTree) {
         return (NoOfOddNodes(hdTree->left) + NoOfOddNodes(hdTree->right));
     }
 }
+
+CPPtr FindMinData(CPPtr hdTree) {
+	if(hdTree == NULL) {
+		cout << "ERROR";
+	}
+    while(hdTree->left != NULL) {
+		hdTree = hdTree->left;
+	}
+	return hdTree;
+}
+
+void FindDepth(CPPtr hdTree, int& depth) {
+	depth++;
+	if(hdTree != NULL) {
+		FindDepth(hdTree->left, depth);
+		FindDepth(hdTree->right, depth);
+	}
+	return;
+}
+
+
 // The function generates an instance of the structure (the same as in the description of the assignement document). The SP pointer
 // points to the head of the tree
 void constructStructure(CPPtr &SP){
