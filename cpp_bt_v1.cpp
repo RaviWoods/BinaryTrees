@@ -17,6 +17,7 @@ int NoOfOddNodes(CPPtr hdTree);
 int NoOfNodes(CPPtr hdTree);
 int SumOfNodes(CPPtr hdTree);
 CPPtr FindMin(CPPtr hdTree);
+int idDepth(CPPtr hdTree, int id);
 // Generate an instance of the structure
 void constructStructure(CPPtr &hdTree);
 
@@ -41,7 +42,7 @@ int main(int argc, char ** argv)
     // 3) Print id and data fields of node with minimum data value
 	CPPtr outPtr = FindMin(hdTree);
 	if(outPtr == NULL) {
-	    cout << "Tree empty, therefore no minimum.";
+	    cout << "Tree empty, therefore no minimum." << endl;
 	}
 	else {
         cout << "id: " << outPtr->id << "\t data: " << outPtr->data << endl;
@@ -52,6 +53,9 @@ int main(int argc, char ** argv)
 	cout << datasum << endl;
     // =================================
 
+	int id = 8;
+	int iddepth = idDepth(hdTree, id);
+	cout << iddepth << endl;
     // Just to freeze the console window (not always necessary)
     // getchar();
 
@@ -89,7 +93,7 @@ int NoOfOddNodes(CPPtr hdTree) {
 }
 
 CPPtr FindMin(CPPtr hdTree) {
-    if( hdTree == NULL) {
+    if(hdTree == NULL) {
         return NULL;
 	}
     if(hdTree->left) {
@@ -98,16 +102,23 @@ CPPtr FindMin(CPPtr hdTree) {
     return hdTree;
 }
 
-void FindDepth(CPPtr hdTree, int& depth) {
-	depth++;
-	if(hdTree != NULL) {
-		FindDepth(hdTree->left, depth);
-		FindDepth(hdTree->right, depth);
+int idDepth(CPPtr hdTree, int id)
+{
+    if(hdTree->id == id) {
+        return 1;
 	}
-	return;
+    else if(hdTree != NULL) {
+		idDepth(hdTree->left, id);
+		idDepth(hdTree->right, id);
+	}
+    return 0;
+
 }
 
 
+bool balanceCheck(CPPtr hdTree) {
+
+}
 // The function generates an instance of the structure (the same as in the description of the assignement document). The SP pointer
 // points to the head of the tree
 void constructStructure(CPPtr &SP){
